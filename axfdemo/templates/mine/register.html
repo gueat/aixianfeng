@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}
+    注册
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block extcss %}
+    <link rel="stylesheet" href="{% static 'mine/css/register.css' %}">
+{% endblock %}
+
+{% block extjs %}
+    <script src="{% static 'mine/js/register.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="register">
+        <div class="back">
+            <a href="{% url 'axf:mine' %}">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+        </div>
+        
+        <form action="{% url 'axf:register' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <div class="input-group-addon">邮箱</div>
+                <input type="text" class="form-control" placeholder="163邮箱/qq邮箱" name="email">
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-addon">密码</div>
+                <input type="password" class="form-control" placeholder="8-16位数字或字母" name="password">
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-addon">验证</div>
+                <input type="password" class="form-control" placeholder="请再次输入密码">
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-addon">昵称</div>
+                <input type="text" class="form-control" placeholder="昵称" name="name">
+            </div>
+
+            <input type="submit" id="subButton" value="注册">
+        </form>
+    </div>
+{% endblock %}
