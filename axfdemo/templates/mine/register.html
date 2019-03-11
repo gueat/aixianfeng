@@ -26,27 +26,40 @@
         
         <form action="{% url 'axf:register' %}" method="post">
             {% csrf_token %}
-            <div class="input-group">
-                <div class="input-group-addon">邮箱</div>
-                <input type="text" class="form-control" placeholder="163邮箱/qq邮箱" name="email">
+            <div class="form-group has-feedback" id="email">
+                <div class="input-group">
+                    <span class="input-group-addon">邮箱</span>
+                    <input type="text" class="form-control" placeholder="163邮箱/qq邮箱" name="email" id="email-t" data-toggle='popover' data-placement="bottom" data-content="格式不正确">
+                </div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
             </div>
 
-            <div class="input-group">
-                <div class="input-group-addon">密码</div>
-                <input type="password" class="form-control" placeholder="8-16位数字或字母" name="password">
+            <div class="form-group has-feedback" id="password">
+                <div class="input-group">
+                    <div class="input-group-addon">密码</div>
+                    <input type="password" class="form-control" placeholder="6-10位数字或字母" name="password">
+                </div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
             </div>
 
-            <div class="input-group">
-                <div class="input-group-addon">验证</div>
-                <input type="password" class="form-control" placeholder="请再次输入密码">
+            <div class="form-group has-feedback" id="password-d">
+                <div class="input-group">
+                    <div class="input-group-addon">验证</div>
+                    <input type="password" class="form-control" placeholder="请再次输入密码" id="password-t" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="两次密码不一致">
+                </div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
             </div>
 
-            <div class="input-group">
-                <div class="input-group-addon">昵称</div>
-                <input type="text" class="form-control" placeholder="昵称" name="name">
+            <div class="form-group has-feedback" id="name">
+                <div class="input-group">
+                    <div class="input-group-addon">昵称</div>
+                    <input type="text" class="form-control" placeholder="昵称" name="name">
+                </div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
             </div>
 
-            <input type="submit" id="subButton" value="注册">
+{#            <input type="submit" id="subButton" value="注册">#}
         </form>
+        <button id="subButton">注册</button>
     </div>
 {% endblock %}

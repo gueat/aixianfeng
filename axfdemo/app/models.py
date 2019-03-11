@@ -121,3 +121,13 @@ class User(models.Model):
     class Meta:
         db_table = 'axf_user'
 
+
+class Cart(models.Model):
+    #用户[添加的这个商品属于哪个用户]
+    user = models.ForeignKey(User)
+
+    # 商品[添加的是哪个商品]
+    goods = models.ForeignKey(Goods)
+
+
+

@@ -3,6 +3,7 @@ import random
 import time
 
 from django.core.cache import cache
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -149,14 +150,22 @@ def login(request):
         # 获取输入的数据
         email = request.POST.get('email')
         password = generate_password(request.POST.get('password'))
-        print(email, password)
-        users = User.objects.filter(email = email).filter(password = password)
+
+        # 重定向位置
+
+        users = User.objects.filter(email = email)
         if users.exists():
             user = users.first()
-            user.token = generate_token()
-            user.save()
-            request.session['token'] = user.token
-            return redirect('axf:mine')
+            if user.password == password:
+                # 更新token
+                token = generate_token()
+                # 保持状态
+                cache.set(token, user.id, 60*60*24*3)
+                # 传递客户端
+                request.session['token'] = token
+                return redirect('axf:mine')
+            else:
+                return render(request, 'mine/login.html', context={'p_err': '帐号或密码错误'})
         else:
             return render(request, 'mine/login.html', context={'p_err': '帐号或密码错误'})
 
@@ -164,3 +173,22 @@ def login(request):
 def logout(request):
     request.session.flush()
     return redirect('axf:mine')
+
+
+def checkemail(request):
+    email = request.GET.get('email')  #  获取帐号信息
+
+    # 去数据库中查找
+    users = User.objects.filter(email=email)
+    if users.exists():  # 帐号被占用
+        response_data = {
+            'status': 0,
+            'msg': '该帐号已被使用！',
+        }
+    else:  # 帐号可以使用
+        response_data = {
+            'status': 1,
+            'msg': '该帐号可以使用！'
+        }
+    # 返回json数据
+    return JsonResponse(response_data)
