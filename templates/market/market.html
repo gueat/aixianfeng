@@ -74,14 +74,21 @@
                                 </div>
                             </a>
                             <div class="bt-wrapper">
-                                <span class="glyphicon glyphicon-minus"></span>
-                                <i>1</i>
-                                <span class="glyphicon glyphicon-plus"></span>
+                                <span class="glyphicon glyphicon-minus" data-goodsid="{{ goods.id }}"></span>
+                                <i class="num">
+                                    {% for cart in carts %}
+                                        {% if goods.id == cart.goods.id %}
+                                            {{ cart.number }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </i>
+                                <span class="glyphicon glyphicon-plus" data-goodsid="{{ goods.id }}"></span>
                             </div>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
+
             <div class="bounce-view category-view">
                 <div class="bounce-wrapper">
                     {% for childtype in childtype_list %}
@@ -89,6 +96,7 @@
                     {% endfor %}
                 </div>
             </div>
+
             <div class="bounce-view sort-view">
                 <div class="bounce-wrapper">
                     <a href="{% url 'axf:market' childid 0 %}">综合排序</a>

@@ -1,5 +1,7 @@
 $(function () {
 
+    $('.market').width(innerWidth+10)
+
     var index = $.cookie('index');
     if (index) {
         $('.type-slider li').eq(index).addClass('active')
@@ -59,5 +61,57 @@ $(function () {
 
         categoryViewHide();
         categoryShow = false
+    })
+
+    // 隐藏处理
+    $('.bt-wrapper .num').each(function () {
+        var num = parseInt($(this).html())
+        if (num) {  // 有数值
+            $(this).prev().show()
+            $(this).show()
+        } else {   //没数值
+            $(this).prev().hide()
+            $(this).hide()
+        }
+    })
+
+    // 点击加操作
+    $('.bt-wrapper>.glyphicon-plus').click(function () {
+        request_data = {
+            'goodsid':$(this).attr('data-goodsid')
+        }
+        // 保存当前操作按钮对象
+        var $that = $(this)
+        $.get('/axf/addcart/', request_data, function (response) {
+            if (response.status == -1){  //未登录
+                // 设置cookie
+                $.cookie('back', 'market', {expires: 3, path: '/'})
+                window.open('/axf/login/', '_self')
+            } else if (response.status == 1){  //操作成功
+                // 设置个数
+                $that.prev().html(response.number)
+                // 设置显示
+                $that.prev().show()
+                $that.prev().prev().show()
+            }
+        })
+    })
+
+    // 点击减操作
+    $('.bt-wrapper>.glyphicon-minus').click(function () {
+        var $that = $(this)
+        request_data = {
+            'goodsid': $(this).attr('data-goodsid')
+        }
+        $.get('/axf/subcart/', request_data, function (response) {
+            if(response.status == 1){
+                if(response.number){
+                    $that.next().html(response.number)
+                } else {
+                    $that.next().hide()
+                    $that.hide()
+                }
+            }
+        })
     })
 });

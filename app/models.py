@@ -123,11 +123,43 @@ class User(models.Model):
 
 
 class Cart(models.Model):
-    #用户[添加的这个商品属于哪个用户]
+    # 用户[添加的这个商品属于哪个用户]
     user = models.ForeignKey(User)
-
     # 商品[添加的是哪个商品]
     goods = models.ForeignKey(Goods)
+    # 商品数量
+    number = models.IntegerField()
+    # 是否选中
+    isselect = models.BooleanField(default=True)
+    # 是否删除
+    isdelete = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'axf_cart'
+
+
+class Order(models.Model):
+    # 用户
+    user = models.ForeignKey(User)
+    # 创建时间
+    createtime = models.DateTimeField(auto_now_add=True)
+    # 更新时间
+    updatetime = models.DateTimeField(auto_now=True)
+    # 状态
+    status = models.IntegerField(default=0)
+    # 订单号
+    identifier = models.CharField(max_length=256)
+
+
+# 订单商品 模型类
+class OrderGoods(models.Model):
+    # 订单
+    order = models.ForeignKey(Order)
+    # 商品
+    goods = models.ForeignKey(Goods)
+
+    # 商品选择规格
+    number = models.IntegerField()
 
 
 

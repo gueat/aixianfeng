@@ -22,26 +22,17 @@
                 </a>
             </div>
             <div class="user-content">
-                {% if user %}
-                    <p>
+                <p>
                     <span class="glyphicon glyphicon-user"></span>
-                    <a href="#">您好：{{ user.name }}</a>
+                    <a id="login-i">
+                        {{ user.name | default:'未登录' }}
+                    </a>
                 </p>
                 <p>
                     <span class="glyphicon glyphicon-th-list"></span>
-                    等级：1
-                </p>
-                {% else %}
-                    <p>
-                    <span class="glyphicon glyphicon-user"></span>
-                    <a href="{% url 'axf:login' %}">未登录</a>
-                </p>
-                <p>
-                    <span class="glyphicon glyphicon-th-list"></span>
-                    等级：无
+                    等级：{{ user.rank | default:'无' }}
                 </p>
                 <a href="{% url 'axf:register' %}" class="register">注册</a>
-                {% endif %}
             </div>
         </div>
 
@@ -55,7 +46,7 @@
         <div class="other">
             <section class="my">
                 <span>我的订单</span>
-                <a href="#">查看全部订单<i class="glyphicon glyphicon-chevron-right"></i></a>
+                <a href="{% url 'axf:orderlist' %}">查看全部订单<i class="glyphicon glyphicon-chevron-right"></i></a>
             </section>
 
             <section>
@@ -63,7 +54,10 @@
                     <li>
                         <a href="#">
                             <dl>
-                                <dt><span class="glyphicon glyphicon-usd"></span></dt>
+                                <dt>
+                                    <span class="glyphicon glyphicon-usd"></span>
+                                    <span class="badge">{{ waitpay }}</span>
+                                </dt>
                                 <dd>待付款</dd>
                             </dl>
                         </a>
@@ -72,7 +66,10 @@
                     <li>
                         <a href="#">
                             <dl>
-                                <dt><span class="glyphicon glyphicon-envelope"></span></dt>
+                                <dt>
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                    <span class="badge">{{ paydone }}</span>
+                                </dt>
                                 <dd>待收货</dd>
                             </dl>
                         </a>
